@@ -40,7 +40,8 @@ getgenv().MovementConfig = {
     JumpEnabled = false,
     JumpValue = 75,
     SpinEnabled = false,
-    SpinSpeed = 20
+    SpinSpeed = 20,
+    NoclipEnabled = false
 }
 
 getgenv().ESPConfig = {
@@ -161,6 +162,26 @@ RunService.RenderStepped:Connect(function()
         end
     else
         TargetAtual = nil
+    end
+end)
+
+--------------------------------------------------------------------------------
+-- SISTEMA DE NOCLIP LEVE (COM LIGA/DESLIGA FUNCIONAL)
+--------------------------------------------------------------------------------
+RunService.Stepped:Connect(function()
+    local character = LocalPlayer.Character
+    if character then
+        for _, part in ipairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                if getgenv().MovementConfig.NoclipEnabled then
+                    part.CanCollide = false
+                else
+                    if part.Name == "HumanoidRootPart" or part.Name == "Head" or part.Name == "UpperTorso" or part.Name == "Torso" or part.Name:find("Leg") or part.Name:find("Arm") then
+                        part.CanCollide = true
+                    end
+                end
+            end
+        end
     end
 end)
 
@@ -291,6 +312,15 @@ AimbotTab:CreateSlider({
 })
 
 -- CONTROLES DA UI: MOVIMENTO
+MovementTab:CreateToggle({
+   Name = "Ativar Noclip (risco de ban dependendo do jogo😶👍)",
+   CurrentValue = false,
+   Flag = "NoclipToggle",
+   Callback = function(Value)
+      getgenv().MovementConfig.NoclipEnabled = Value
+   end,
+})
+
 MovementTab:CreateToggle({
    Name = "Ativar Speed",
    CurrentValue = false,
@@ -628,7 +658,7 @@ ESPTab:CreateSlider({
 
 Rayfield:Notify({
    Title = "Eclipse X Hub Atualizado!",
-   Content = "Opção de voo removida com sucesso.",
+   Content = "Texto do Noclip atualizado com o aviso desejado.",
    Duration = 3,
    Image = 4483362458,
 })
