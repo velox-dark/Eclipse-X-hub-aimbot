@@ -1,7 +1,18 @@
 -- ========================================================
--- CONFIGURAÇÃO DA LOGO FLUTUANTE & AUTO-EXECUTE
+-- SISTEMA DE TABELA DE KEYS (10 KEYS VÁLIDAS)
 -- ========================================================
-local LogoID = "rbxassetid://96312022457470" 
+local KeysValidas = {
+    ["the0000000000008786nnp"] = true, -- Key Original
+    ["the0000000000009123abc"] = true,
+    ["the0000000000004567xyz"] = true,
+    ["the0000000000003141mno"] = true,
+    ["the0000000000007777vhub"] = true,
+    ["the0000000000009999ecl"] = true,
+    ["the0000000000001024rst"] = true,
+    ["the0000000000008080dev"] = true,
+    ["the0000000000005555qwe"] = true,
+    ["the0000000000001234key"] = true
+}
 
 -- Limpeza de UI anterior se existir
 local CoreGui = game:GetService("CoreGui")
@@ -10,13 +21,20 @@ local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
 local SoundService = game:GetService("SoundService")
 
+if CoreGui:FindFirstChild("EclipseXHubKeySystem") then CoreGui.EclipseXHubKeySystem:Destroy() end
 if CoreGui:FindFirstChild("EclipseXHubModern") then CoreGui.EclipseXHubModern:Destroy() end
 if CoreGui:FindFirstChild("EclipseXHubToggle") then CoreGui.EclipseXHubToggle:Destroy() end
 
--- Criando a UI Principal
+-- ========================================================
+-- CONFIGURAÇÃO DA LOGO FLUTUANTE & AUTO-EXECUTE
+-- ========================================================
+local LogoID = "rbxassetid://96312022457470" 
+
+-- Criando a UI Principal (Inicia Oculta)
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "EclipseXHubModern"
 ScreenGui.Parent = CoreGui
+ScreenGui.Enabled = false
 
 local MainFrame = Instance.new("Frame")
 MainFrame.Parent = ScreenGui
@@ -293,11 +311,12 @@ local function AddInput(page, text, defaultVal, callback)
 end
 
 -- ========================================================
--- BOTÃO FLUTUANTE (70x70)
+-- BOTÃO FLUTUANTE (70x70) - Inicia Oculto
 -- ========================================================
 local ToggleGui = Instance.new("ScreenGui")
 ToggleGui.Name = "EclipseXHubToggle"
 ToggleGui.Parent = CoreGui
+ToggleGui.Enabled = false
 
 local MinButton = Instance.new("ImageButton")
 MinButton.Parent = ToggleGui
@@ -318,6 +337,113 @@ MinStroke.Thickness = 2
 
 MinButton.MouseButton1Click:Connect(function()
     MainFrame.Visible = not MainFrame.Visible
+end)
+
+-- ========================================================
+-- UI DO SISTEMA DE KEY (SISTEMA DE VALIDAÇÃO MULTI-KEY)
+-- ========================================================
+local KeyGui = Instance.new("ScreenGui")
+KeyGui.Name = "EclipseXHubKeySystem"
+KeyGui.Parent = CoreGui
+
+local KeyFrame = Instance.new("Frame")
+KeyFrame.Parent = KeyGui
+KeyFrame.Size = UDim2.new(0, 360, 0, 210)
+KeyFrame.Position = UDim2.new(0.5, -180, 0.5, -105)
+KeyFrame.BackgroundColor3 = Color3.fromRGB(18, 18, 22)
+KeyFrame.BorderSizePixel = 0
+KeyFrame.Active = true
+KeyFrame.Draggable = true
+
+local KeyCorner = Instance.new("UICorner")
+KeyCorner.CornerRadius = UDim.new(0, 10)
+KeyCorner.Parent = KeyFrame
+
+local KeyStroke = Instance.new("UIStroke")
+KeyStroke.Parent = KeyFrame
+KeyStroke.Color = Color3.fromRGB(180, 100, 255)
+KeyStroke.Thickness = 1.5
+
+local KeyTitle = Instance.new("TextLabel")
+KeyTitle.Parent = KeyFrame
+KeyTitle.Size = UDim2.new(1, 0, 0, 40)
+KeyTitle.Position = UDim2.new(0, 0, 0, 10)
+KeyTitle.Text = "Eclipse X Hub - Key System"
+KeyTitle.TextColor3 = Color3.fromRGB(180, 100, 255)
+KeyTitle.Font = Enum.Font.GothamBold
+KeyTitle.TextSize = 16
+KeyTitle.BackgroundTransparency = 1
+
+local KeySubTitle = Instance.new("TextLabel")
+KeySubTitle.Parent = KeyFrame
+KeySubTitle.Size = UDim2.new(1, -40, 0, 20)
+KeySubTitle.Position = UDim2.new(0, 20, 0, 45)
+KeySubTitle.Text = "Insira a chave de acesso para continuar:"
+KeySubTitle.TextColor3 = Color3.fromRGB(180, 180, 190)
+KeySubTitle.Font = Enum.Font.Gotham
+KeySubTitle.TextSize = 11
+KeySubTitle.BackgroundTransparency = 1
+
+local KeyInput = Instance.new("TextBox")
+KeyInput.Parent = KeyFrame
+KeyInput.Size = UDim2.new(1, -40, 0, 42)
+KeyInput.Position = UDim2.new(0, 20, 0, 75)
+KeyInput.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
+KeyInput.PlaceholderText = "Cole sua Key aqui..."
+KeyInput.PlaceholderColor3 = Color3.fromRGB(100, 100, 120)
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.Font = Enum.Font.Gotham
+KeyInput.TextSize = 11
+KeyInput.ClearTextOnFocus = false
+
+local KeyInputCorner = Instance.new("UICorner")
+KeyInputCorner.CornerRadius = UDim.new(0, 6)
+KeyInputCorner.Parent = KeyInput
+
+local KeyInputStroke = Instance.new("UIStroke")
+KeyInputStroke.Parent = KeyInput
+KeyInputStroke.Color = Color3.fromRGB(50, 50, 70)
+KeyInputStroke.Thickness = 1
+
+local SubmitBtn = Instance.new("TextButton")
+SubmitBtn.Parent = KeyFrame
+SubmitBtn.Size = UDim2.new(1, -40, 0, 38)
+SubmitBtn.Position = UDim2.new(0, 20, 0, 130)
+SubmitBtn.BackgroundColor3 = Color3.fromRGB(140, 60, 230)
+SubmitBtn.Text = "VERIFICAR KEY"
+SubmitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+SubmitBtn.Font = Enum.Font.GothamBold
+SubmitBtn.TextSize = 12
+
+local SubmitCorner = Instance.new("UICorner")
+SubmitCorner.CornerRadius = UDim.new(0, 6)
+SubmitCorner.Parent = SubmitBtn
+
+local StatusLabel = Instance.new("TextLabel")
+StatusLabel.Parent = KeyFrame
+StatusLabel.Size = UDim2.new(1, 0, 0, 20)
+StatusLabel.Position = UDim2.new(0, 0, 0, 175)
+StatusLabel.Text = ""
+StatusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+StatusLabel.Font = Enum.Font.Gotham
+StatusLabel.TextSize = 10
+StatusLabel.BackgroundTransparency = 1
+
+SubmitBtn.MouseButton1Click:Connect(function()
+    local keyDigitada = KeyInput.Text
+    if KeysValidas[keyDigitada] then
+        StatusLabel.TextColor3 = Color3.fromRGB(80, 255, 120)
+        StatusLabel.Text = "Key Correta! Carregando Hub..."
+        task.wait(0.6)
+        
+        KeyGui:Destroy()
+        ScreenGui.Enabled = true
+        ToggleGui.Enabled = true
+    else
+        StatusLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+        StatusLabel.Text = "Key Incorreta! Tente novamente."
+    end
 end)
 
 -- ========================================================
@@ -455,11 +581,9 @@ RunService.RenderStepped:Connect(function()
                 raycastParams.FilterDescendantsInstances = {character}
                 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
 
-                -- Raycast para detectar parede à frente do personagem
                 local rayResult = Workspace:Raycast(hrp.Position, hrp.CFrame.LookVector * 2.5, raycastParams)
 
                 if rayResult then
-                    -- Se houver parede próxima e o jogador estiver tentando subir/pular
                     if UserInputService:IsKeyDown(Enum.KeyCode.Space) or hum.MoveDirection.Magnitude > 0 then
                         hrp.Velocity = Vector3.new(hrp.Velocity.X, 35, hrp.Velocity.Z)
                     end
@@ -853,7 +977,6 @@ AddToggle(MovementTab, "Noclip", getgenv().MovementConfig.NoclipEnabled, functio
     getgenv().MovementConfig.NoclipEnabled = val
 end, "(Risco de ban permanente dependendo do jogo😶👍)")
 
--- ADICIONANDO ESCALAR PAREDES NA ABA DE MOVIMENTO COM A DESCRIÇÃO SOLICITADA
 AddToggle(MovementTab, "Escalar Paredes", getgenv().MovementConfig.WallClimbEnabled, function(val)
     getgenv().MovementConfig.WallClimbEnabled = val
 end, "(Pesso que tome cuidado quando usar 😶👍)")
